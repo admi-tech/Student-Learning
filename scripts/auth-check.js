@@ -5,13 +5,11 @@ const db = firebase.firestore();
 
 // Admin email list (hardcoded or fetched dynamically)
 const adminEmails = [
-  "john@africadigitalmedia.org",
-  "richard@africadigitalmedia.org",
-  "itsupport@africadigitalmedia.org"
+  "admin@africadigitalmedia.org",
+  "richard@africadigitalmedia.org"
 ];
 
 // Whitelisted domain
-const allowedDomain = "gmail.com";
 const allowedDomain = "africadigitalmedia.org";
 
 function enforceAccessControl(callback) {
