@@ -1,5 +1,6 @@
-<!DOCTYPE html><html lang="en">
-<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Analytics - ADMI Learning</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
 <style>
@@ -8,7 +9,7 @@ header { background: #003366; color: white; padding: 1rem 2rem; display: flex; j
 header img { height: 40px; }
 nav a { margin-right: 1rem; color: white; text-decoration: none; }
 nav a:hover { text-decoration: underline; }
-.container { padding: 2rem; }
+.container { padding: 2rem; display: none; }
 .card { background: white; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 iframe { width: 100%; height: 200px; border-radius: 6px; }
 footer { background: #003366; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
@@ -34,12 +35,21 @@ footer { background: #003366; color: white; text-align: center; padding: 1rem; m
 <script>
   const auth = firebase.auth();
   auth.onAuthStateChanged(user => {
-    if (!user && true) window.location.href = "/";
-    else document.getElementById("userName").textContent = user?.displayName || "Student";
+    if (!user) {
+      window.location.href = "/";
+    } else {
+      document.getElementById("userName").textContent = user.displayName || "Student";
+      document.querySelector(".container").style.display = "block";
+    }
   });
-  function logout() { auth.signOut().then(() => window.location.href = "/"); }
+  function logout() {
+    firebase.auth().signOut().then(() => {
+      window.location.href = "/";
+    });
+  }
 </script>
-</head><body>
+</head>
+<body>
 <header>
   <div style="display: flex; align-items: center; gap: 1rem;">
     <img src="assets/logo-admi-learning.png" alt="ADMI Logo" />
@@ -56,6 +66,8 @@ footer { background: #003366; color: white; text-align: center; padding: 1rem; m
     <button onclick="logout()" style="margin-left:1rem;">Logout</button>
   </div>
 </header>
-<div class="container"><h2>Analytics Page</h2><p>You'll see session logs here in future.</p></div>
+<div class="container">
+  <h2>Analytics Page</h2><p>You’ll see session logs here in future.</p>
+</div>
 <footer>&copy; 2025 ADMI Learning</footer>
 </body></html>
