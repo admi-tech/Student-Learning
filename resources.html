@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Resources - ADMI Learning</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
 <style>
@@ -17,6 +16,7 @@ footer { background: #003366; color: white; text-align: center; padding: 1rem; m
 
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyCT8NSfb_MS11TtF-YEmqRYiOxFj9E7uS8",
@@ -28,16 +28,18 @@ footer { background: #003366; color: white; text-align: center; padding: 1rem; m
     measurementId: "G-9FEF71D529"
   };
   firebase.initializeApp(firebaseConfig);
+</script>
+<script src="scripts/analytics.js" defer></script>
+
+<script>
   const auth = firebase.auth();
   auth.onAuthStateChanged(user => {
-    if (!user) window.location.href = "/";
-    else document.getElementById("userName").textContent = user.displayName || "Student";
+    if (!user && true) window.location.href = "/";
+    else document.getElementById("userName").textContent = user?.displayName || "Student";
   });
   function logout() { auth.signOut().then(() => window.location.href = "/"); }
 </script>
-
-</head>
-<body>
+</head><body>
 <header>
   <div style="display: flex; align-items: center; gap: 1rem;">
     <img src="assets/logo-admi-learning.png" alt="ADMI Logo" />
@@ -55,15 +57,9 @@ footer { background: #003366; color: white; text-align: center; padding: 1rem; m
   </div>
 </header>
 <div class="container">
-  
 <h2>Google Drive Folders</h2>
-<div class="card"><h3>Semester 1 Materials</h3><a href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID_1" target="_blank">Open Folder</a></div>
-<div class="card"><h3>Semester 2 Materials</h3><a href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID_2" target="_blank">Open Folder</a></div>
-<div class="card"><h3>Semester 3 Materials</h3><a href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID_3" target="_blank">Open Folder</a></div>
-<div class="card"><h3>Semester 4 Materials</h3><a href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID_4" target="_blank">Open Folder</a></div>
-<div class="card"><h3>Semester 5 Materials</h3><a href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID_5" target="_blank">Open Folder</a></div>
-<div class="card"><h3>Semester 6 Materials</h3><a href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID_6" target="_blank">Open Folder</a></div>
-
+<div class="card"><h3>Semester 1</h3><a data-track href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID_1" target="_blank">Open Folder</a></div>
+<div class="card"><h3>Semester 2</h3><a data-track href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID_2" target="_blank">Open Folder</a></div>
 </div>
 <footer>&copy; 2025 ADMI Learning</footer>
 </body></html>
