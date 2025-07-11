@@ -7,10 +7,12 @@ const db = firebase.firestore();
 const adminEmails = [
   "admin@africadigitalmedia.org",
   "richard@africadigitalmedia.org"
+  "itsupport@africadigitalmedia.org"
 ];
 
 // Whitelisted domain
 const allowedDomain = "africadigitalmedia.org";
+const allowedDomain = "gmail.com";
 
 function enforceAccessControl(callback) {
   auth.onAuthStateChanged(user => {
