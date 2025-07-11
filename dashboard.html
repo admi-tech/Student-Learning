@@ -1,86 +1,163 @@
 <!DOCTYPE html>
-<html><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard - ADMI</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
-<style>
+<html lang="en"><head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard - ADMI Learning</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
 
-body{font-family:'Inter',sans-serif;margin:0;background:#f4f6f8;}
-
-header{background:#003366;color:white;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;}
-
-nav a{color:white;margin-right:1rem;text-decoration:none;}
-
-footer{background:#003366;color:white;text-align:center;padding:1rem;}
-
-.container{padding:2rem;}
-</style>
- 
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script>
-
 const firebaseConfig = {
-
   apiKey: "AIzaSyCT8NSfb_MS11TtF-YEmqRYiOxFj9E7uS8",
-
   authDomain: "admi-learning.firebaseapp.com",
-
   projectId: "admi-learning",
-
   storageBucket: "admi-learning.firebasestorage.app",
-
   messagingSenderId: "544669303083",
-
   appId: "1:544669303083:web:a7031e48d85fe27780856e",
-
   measurementId: "G-9FEF71D529"
-
 };
-
 firebase.initializeApp(firebaseConfig);
 </script>
- 
+
 <script src="scripts/auth-check.js"></script>
+<style>
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  background: #f4f6f8;
+  color: #333;
+}
+header {
+  background: #003366;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header img {
+  height: 40px;
+}
+nav a {
+  margin-right: 1rem;
+  color: white;
+  text-decoration: none;
+}
+nav a:hover {
+  text-decoration: underline;
+}
+.container {
+  padding: 2rem;
+}
+.hero {
+  background: linear-gradient(to right, #003366, #005f77);
+  color: white;
+  padding: 3rem 2rem;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.hero h1 {
+  margin: 0 0 1rem;
+  font-size: 2rem;
+}
+.cards {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  margin-top: 2rem;
+}
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+}
+.card h3 {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+}
+.card a {
+  text-decoration: none;
+  color: inherit;
+}
+footer {
+  background: #003366;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 3rem;
+}
+</style>
 </head>
 <body>
 <header>
-<div style="display:flex;align-items:center;gap:1rem;">
-<img src="assets/logo-admi-learning.png" alt="ADMI Logo" height="40"/>
-<strong>ADMI Learning</strong>
-<nav>
-<a href="dashboard.html">Dashboard</a>
-<a href="videos.html">Videos</a>
-<a href="resources.html">Resources</a>
-<a href="analytics.html">Analytics</a>
-</nav>
-</div>
-<div>
-
+  <div style="display: flex; align-items: center; gap: 1rem;">
+    <img src="assets/logo-admi-learning.png" alt="ADMI Logo" />
+    <strong>ADMI Learning</strong>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="videos.html">Videos</a>
+      <a href="resources.html">Resources</a>
+      <a href="analytics.html">Analytics</a>
+    </nav>
+  </div>
+  <div>
     Welcome, <span id="userName">...</span>
-<button onclick="logout()">Logout</button>
-</div>
+    <button onclick="logout()" style="margin-left:1rem;">Logout</button>
+  </div>
 </header>
+
+<section class="hero">
+  <h1>Hello, <span id="studentName">Student</span> 👋</h1>
+  <p>Welcome to your learning dashboard. Ready to dive in?</p>
+</section>
+
 <div class="container">
-<h2>Welcome to your dashboard</h2>
-<p>Explore videos, resources, and track your learning progress.</p>
+  <div class="cards">
+    <a href="videos.html" class="card">
+      <div><i data-lucide="play-circle" style="width:40px;height:40px;"></i></div>
+      <h3>Watch Videos</h3>
+      <p>Explore your learning playlist.</p>
+    </a>
+    <a href="resources.html" class="card">
+      <div><i data-lucide="folder-open" style="width:40px;height:40px;"></i></div>
+      <h3>Study Resources</h3>
+      <p>Access your Google Drive materials.</p>
+    </a>
+    <a href="analytics.html" class="card">
+      <div><i data-lucide="bar-chart-3" style="width:40px;height:40px;"></i></div>
+      <h3>Your Progress</h3>
+      <p>View your learning activity.</p>
+    </a>
+    <a href="#" class="card">
+      <div><i data-lucide="upload" style="width:40px;height:40px;"></i></div>
+      <h3>Submit Work</h3>
+      <p>Coming soon: upload assignments.</p>
+    </a>
+  </div>
 </div>
+
 <footer>© 2025 ADMI Learning</footer>
+
 <script>
-
 function logout() {
-
   firebase.auth().signOut().then(() => window.location.replace("/"));
-
 }
- 
+
 enforceAccessControl((user) => {
-
   document.getElementById("userName").textContent = user.displayName || user.email;
-
+  document.getElementById("studentName").textContent = user.displayName?.split(" ")[0] || "Student";
+  lucide.createIcons();
 });
 </script>
-</body></html>
-
- 
+</body>
+</html>
