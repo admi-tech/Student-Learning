@@ -1,77 +1,257 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Videos - ADMI Learning</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
-<style>
-body { font-family: 'Inter', sans-serif; margin: 0; background: #f4f6f8; color: #333; }
-header { background: #003366; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
-header img { height: 40px; }
-nav a { margin-right: 1rem; color: white; text-decoration: none; }
-nav a:hover { text-decoration: underline; }
-.container { padding: 2rem; display: none; }
-.card { background: white; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-iframe { width: 100%; height: 200px; border-radius: 6px; }
-footer { background: #003366; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
-</style>
-
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyCT8NSfb_MS11TtF-YEmqRYiOxFj9E7uS8",
-    authDomain: "admi-learning.firebaseapp.com",
-    projectId: "admi-learning",
-    storageBucket: "admi-learning.firebasestorage.app",
-    messagingSenderId: "544669303083",
-    appId: "1:544669303083:web:a7031e48d85fe27780856e",
-    measurementId: "G-9FEF71D529"
-  };
-  firebase.initializeApp(firebaseConfig);
-</script>
-<script src="scripts/analytics.js" defer></script>
-
-<script>
-  const auth = firebase.auth();
-  auth.onAuthStateChanged(user => {
-    if (!user) {
-      window.location.href = "/";
-    } else {
-      document.getElementById("userName").textContent = user.displayName || "Student";
-      document.querySelector(".container").style.display = "block";
+<html lang="en"><head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Videos - ADMI Learning</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: #f4f6f8;
     }
-  });
-  function logout() {
-    firebase.auth().signOut().then(() => {
-      window.location.href = "/";
-    });
-  }
-</script>
+    header {
+      background: #003366;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header img { height: 40px; }
+    nav a {
+      margin-right: 1rem;
+      color: white;
+      text-decoration: none;
+    }
+    .container {
+      padding: 2rem;
+    }
+    .filter-bar {
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    input[type="text"], select {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    .videos {
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    .video-card {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    .video-card iframe {
+      width: 100%;
+      height: 160px;
+      border-radius: 6px;
+    }
+    .video-card h3 {
+      margin: 0.5rem 0;
+    }
+    .video-card .reactions button {
+      margin-right: 0.5rem;
+    }
+    .comment-box textarea {
+      width: 100%;
+      height: 60px;
+      margin-top: 0.5rem;
+    }
+    .pagination {
+      margin-top: 2rem;
+      text-align: center;
+    }
+    .pagination button {
+      padding: 0.5rem 1rem;
+      margin: 0 0.5rem;
+    }
+    footer {
+      background: #003366;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="scripts/auth-check.js"></script>
 </head>
 <body>
-<header>
-  <div style="display: flex; align-items: center; gap: 1rem;">
-    <img src="assets/logo-admi-learning.png" alt="ADMI Logo" />
-    <strong>ADMI Learning</strong>
-    <nav>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="videos.html">Videos</a>
-      <a href="resources.html">Resources</a>
-      <a href="analytics.html">Analytics</a>
-    </nav>
-  </div>
-  <div>
-    Welcome, <span id="userName">...</span>
-    <button onclick="logout()" style="margin-left:1rem;">Logout</button>
-  </div>
-</header>
-<div class="container">
-  
-<h2>Featured YouTube Videos</h2>
-<div class="card"><h3>Creative Editing 101</h3><iframe src="https://www.youtube.com/embed/2e2Yw2K3qzU" allowfullscreen></iframe></div>
-<div class="card"><h3>Filmmaking for Beginners</h3><iframe src="https://www.youtube.com/embed/TlB_eWDSMt4" allowfullscreen></iframe></div>
+  <header>
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <img src="assets/logo-admi-learning.png" alt="ADMI Logo" />
+      <strong>ADMI Learning</strong>
+      <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="videos.html">Videos</a>
+        <a href="resources.html">Resources</a>
+        <a href="analytics.html">Analytics</a>
+      </nav>
+    </div>
+    <div>
+      Welcome, <span id="userName">...</span>
+      <button onclick="logout()" style="margin-left:1rem;">Logout</button>
+    </div>
+  </header>
 
-</div>
-<footer>&copy; 2025 ADMI Learning</footer>
-</body></html>
+  <div class="container">
+    <h2>Interactive Video Library</h2>
+
+    <div class="filter-bar">
+      <input type="text" id="searchInput" placeholder="Search videos...">
+      <select id="categoryFilter">
+        <option value="">All Categories</option>
+        <option value="Editing">Editing</option>
+        <option value="Filmmaking">Filmmaking</option>
+        <option value="Audio">Audio</option>
+        <option value="Cinematography">Cinematography</option>
+      </select>
+    </div>
+
+    <div id="videoList" class="videos"></div>
+    <div class="pagination">
+      <button onclick="prevPage()">Prev</button>
+      <span id="pageIndicator">Page 1</span>
+      <button onclick="nextPage()">Next</button>
+    </div>
+  </div>
+
+  <footer>© 2025 ADMI Learning</footer>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCT8NSfb_MS11TtF-YEmqRYiOxFj9E7uS8",
+      authDomain: "admi-learning.firebaseapp.com",
+      projectId: "admi-learning",
+      storageBucket: "admi-learning.firebasestorage.app",
+      messagingSenderId: "544669303083",
+      appId: "1:544669303083:web:a7031e48d85fe27780856e",
+      measurementId: "G-9FEF71D529"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    let currentUser = null;
+    let currentPage = 1;
+    const perPage = 6;
+    let allVideos = [];
+
+    const videoListEl = document.getElementById("videoList");
+    const searchInput = document.getElementById("searchInput");
+    const categoryFilter = document.getElementById("categoryFilter");
+
+    enforceAccessControl((user) => {
+      document.getElementById("userName").textContent = user.displayName || user.email;
+      currentUser = user;
+      loadVideos();
+    });
+
+    function logout() {
+      auth.signOut().then(() => window.location.replace("/"));
+    }
+
+    function loadVideos() {
+      db.collection("videos").get().then(snapshot => {
+        allVideos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        applyFilters();
+      });
+    }
+
+    function applyFilters() {
+      let filtered = allVideos;
+      const searchTerm = searchInput.value.toLowerCase();
+      const category = categoryFilter.value;
+
+      if (searchTerm) {
+        filtered = filtered.filter(v => v.title.toLowerCase().includes(searchTerm));
+      }
+      if (category) {
+        filtered = filtered.filter(v => v.category === category);
+      }
+
+      displayVideos(filtered);
+    }
+
+    function displayVideos(videos) {
+      const start = (currentPage - 1) * perPage;
+      const end = start + perPage;
+      const pageVideos = videos.slice(start, end);
+      videoListEl.innerHTML = "";
+
+      pageVideos.forEach(video => {
+        const card = document.createElement("div");
+        card.className = "video-card";
+        card.innerHTML = `
+          <iframe src="https://www.youtube.com/embed/${video.youtubeId}" allowfullscreen></iframe>
+          <h3>${video.title}</h3>
+          <p>Duration: ${video.duration} | Category: ${video.category}</p>
+          <div class="reactions">
+            <button onclick="react('${video.id}', 'like')">👍 Helpful</button>
+            <button onclick="react('${video.id}', 'dislike')">👎 Unclear</button>
+          </div>
+          <div class="comment-box">
+            <textarea placeholder="Leave a comment..." id="comment-${video.id}"></textarea>
+            <button onclick="submitComment('${video.id}')">Post</button>
+          </div>
+        `;
+        videoListEl.appendChild(card);
+      });
+
+      document.getElementById("pageIndicator").textContent = `Page ${currentPage}`;
+    }
+
+    function submitComment(videoId) {
+      const textArea = document.getElementById(`comment-${videoId}`);
+      const text = textArea.value.trim();
+      if (!text || !currentUser) return;
+      db.collection("comments").add({
+        videoId,
+        uid: currentUser.uid,
+        name: currentUser.displayName || currentUser.email,
+        text,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        alert("Comment posted!");
+        textArea.value = "";
+      });
+    }
+
+    function react(videoId, type) {
+      if (!currentUser) return;
+      db.collection("reactions").add({
+        videoId,
+        uid: currentUser.uid,
+        type,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        applyFilters();
+      }
+    }
+
+    function nextPage() {
+      if (currentPage * perPage < allVideos.length) {
+        currentPage++;
+        applyFilters();
+      }
+    }
+
+    searchInput.addEventListener("input", applyFilters);
+    categoryFilter.addEventListener("change", applyFilters);
+  </script>
+</body>
+</html>
