@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - ADMI Learning</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    body.hidden { display: none; }
+    body { font-family: 'Inter', sans-serif; margin: 0; background: #f4f6f8; color: #333; }
+    header { background: #003366; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+    header img { height: 40px; }
+    nav a { margin-right: 1rem; color: white; text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+    .container { padding: 2rem; }
+    footer { background: #003366; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCT8NSfb_MS11TtF-YEmqRYiOxFj9E7uS8",
+      authDomain: "admi-learning.firebaseapp.com",
+      projectId: "admi-learning",
+      storageBucket: "admi-learning.firebasestorage.app",
+      messagingSenderId: "544669303083",
+      appId: "1:544669303083:web:a7031e48d85fe27780856e",
+      measurementId: "G-9FEF71D529"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.body.classList.add("hidden");
+
+      auth.onAuthStateChanged(user => {
+        if (!user) {
+          // Clear page content before redirect
+          document.body.innerHTML = '';
+          window.location.replace("/");
+        } else {
+          document.getElementById("userName").textContent = user.displayName || "Student";
+          document.body.classList.remove("hidden");
+        }
+      });
+    });
+
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        document.body.innerHTML = '';  // Clear immediately
+        window.location.replace("/");
+      });
+    }
+  </script>
+</head>
+<body class="hidden">
+  <header>
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <img src="assets/logo-admi-learning.png" alt="ADMI Logo" />
+      <strong>ADMI Learning</strong>
+      <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="videos.html">Videos</a>
+        <a href="resources.html">Resources</a>
+        <a href="analytics.html">Analytics</a>
+      </nav>
+    </div>
+    <div>
+      Welcome, <span id="userName">...</span>
+      <button onclick="logout()" style="margin-left:1rem;">Logout</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <h2>Welcome to your dashboard</h2>
+    <p>Explore tabs above to continue learning.</p>
+  </div>
+
+  <footer>&copy; 2025 ADMI Learning</footer>
+</body>
+</html>
