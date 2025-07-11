@@ -4,48 +4,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ADMI Learning</title>
+  <title>ADMI Learning Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
     body {
       font-family: 'Inter', sans-serif;
       background: linear-gradient(to bottom right, #003366, #00AABB);
-      color: #fff;
+      margin: 0; padding: 0;
+      color: white;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
     }
-    header {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    header img {
-      height: 50px;
-    }
-    header h1 {
-      font-size: 1.5rem;
-      margin-left: 0.75rem;
-    }
-    .container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
-    .login-card {
-      background: #ffffff;
+    .card {
+      background: white;
       color: #1f2937;
       padding: 2rem;
       border-radius: 12px;
@@ -53,14 +26,9 @@
       text-align: center;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
-    .login-card h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+    .card h2 {
       color: #003366;
-    }
-    .login-card p {
-      margin-bottom: 2rem;
-      font-size: 1rem;
+      margin-bottom: 1rem;
     }
     .btn {
       background: #00AABB;
@@ -70,78 +38,98 @@
       border-radius: 6px;
       font-size: 1rem;
       cursor: pointer;
-      transition: background 0.2s ease;
+      margin-top: 1rem;
     }
     .btn:hover {
       background: #008fa0;
     }
-    footer {
-      background: rgba(0, 0, 0, 0.2);
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.875rem;
+    .error {
+      color: red;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    .logout {
+      display: none;
+      margin-top: 1rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    <div style="display: flex; align-items: center;">
-      <img src="assets/logo-admi-learning.png" alt="ADMI Learning Logo"/>
-      <h1>ADMI Learning</h1>
-    </div>
-    <button id="logoutBtn" class="btn" style="display: none;">Logout</button>
-  </header>
-
-  <div class="container">
-    <div class="login-card" id="loginSection">
-      <h2>Welcome Student</h2>
-      <p>Sign in with your school Google account to access classes and resources.</p>
-      <button id="loginBtn" class="btn">Sign in with Google</button>
-    </div>
-
-    <div class="login-card" id="dashboard" style="display: none;">
-      <h2>Welcome, <span id="userName"></span>!</h2>
-      <p>You are now logged in. Visit your dashboard to start learning.</p>
-    </div>
+  <div class="card" id="loginCard">
+    <h2>Welcome to ADMI Learning</h2>
+    <p>Sign in with your school Google account to access your dashboard.</p>
+    <button class="btn" id="loginBtn">Sign in with Google</button>
+    <div class="error" id="errorMsg"></div>
   </div>
 
-  <footer>
-    &copy; 2025 ADMI Learning. Empowering Africa's Creatives.
-  </footer>
+  <div class="card" id="dashboard" style="display: none;">
+    <h2>Welcome, <span id="userName">Student</span>!</h2>
+    <p>You are now logged in.</p>
+    <button class="btn logout" id="logoutBtn">Logout</button>
+  </div>
 
   <script>
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      projectId: "YOUR_PROJECT_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyCT8NSfb_MS11TtF-YEmqRYiOxFj9E7uS8",
+      authDomain: "admi-learning.firebaseapp.com",
+      projectId: "admi-learning",
+      storageBucket: "admi-learning.firebasestorage.app",
+      messagingSenderId: "544669303083",
+      appId: "1:544669303083:web:a7031e48d85fe27780856e",
+      measurementId: "G-9FEF71D529"
     };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
 
+    firebase.initializeApp(firebaseConfig);
+    console.log("✅ Firebase initialized");
+
+    const auth = firebase.auth();
     const loginBtn = document.getElementById('loginBtn');
     const logoutBtn = document.getElementById('logoutBtn');
-    const loginSection = document.getElementById('loginSection');
+    const loginCard = document.getElementById('loginCard');
     const dashboard = document.getElementById('dashboard');
     const userName = document.getElementById('userName');
+    const errorMsg = document.getElementById('errorMsg');
 
     loginBtn.onclick = () => {
+      console.log("🔐 Login button clicked");
       const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider);
+      auth.signInWithPopup(provider)
+        .then(result => {
+          console.log("✅ Login result:", result);
+          const name = result.user.displayName || "Student";
+          userName.textContent = name;
+          loginCard.style.display = 'none';
+          dashboard.style.display = 'block';
+          logoutBtn.style.display = 'inline-block';
+          errorMsg.textContent = "";
+        })
+        .catch(error => {
+          console.error("❌ Login error:", error);
+          errorMsg.textContent = error.message;
+        });
     };
 
     logoutBtn.onclick = () => {
-      auth.signOut();
+      auth.signOut().then(() => {
+        console.log("🔓 Logged out");
+        loginCard.style.display = 'block';
+        dashboard.style.display = 'none';
+        logoutBtn.style.display = 'none';
+        errorMsg.textContent = '';
+      });
     };
 
     auth.onAuthStateChanged(user => {
       if (user) {
-        userName.textContent = user.displayName;
-        loginSection.style.display = 'none';
+        console.log("✅ Auth state detected:", user);
+        const name = user.displayName || "Student";
+        userName.textContent = name;
+        loginCard.style.display = 'none';
         dashboard.style.display = 'block';
         logoutBtn.style.display = 'inline-block';
       } else {
-        loginSection.style.display = 'block';
+        console.log("ℹ️ No user signed in");
+        loginCard.style.display = 'block';
         dashboard.style.display = 'none';
         logoutBtn.style.display = 'none';
       }
