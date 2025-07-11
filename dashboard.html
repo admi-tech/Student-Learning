@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dashboard - ADMI Learning</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
 
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard - ADMI Learning</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -21,7 +21,6 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 </script>
-
 <script src="scripts/auth-check.js"></script>
 <style>
 body {
@@ -100,54 +99,50 @@ footer {
 </head>
 <body>
 <header>
-  <div style="display: flex; align-items: center; gap: 1rem;">
-    <img src="assets/logo-admi-learning.png" alt="ADMI Logo" />
-    <strong>ADMI Learning</strong>
-    <nav>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="videos.html">Videos</a>
-      <a href="resources.html">Resources</a>
-      <a href="analytics.html">Analytics</a>
-    </nav>
-  </div>
-  <div>
-    Welcome, <span id="userName">...</span>
-    <button onclick="logout()" style="margin-left:1rem;">Logout</button>
-  </div>
-</header>
-
-<section class="hero">
-  <h1>Hello, <span id="studentName">Student</span> 👋</h1>
-  <p>Welcome to your learning dashboard. Ready to dive in?</p>
-</section>
-
-<div class="container">
-  <div class="cards">
-    <a href="videos.html" class="card">
-      <div><i data-lucide="play-circle" style="width:40px;height:40px;"></i></div>
-      <h3>Watch Videos</h3>
-      <p>Explore your learning playlist.</p>
-    </a>
-    <a href="resources.html" class="card">
-      <div><i data-lucide="folder-open" style="width:40px;height:40px;"></i></div>
-      <h3>Study Resources</h3>
-      <p>Access your Google Drive materials.</p>
-    </a>
-    <a href="analytics.html" class="card">
-      <div><i data-lucide="bar-chart-3" style="width:40px;height:40px;"></i></div>
-      <h3>Your Progress</h3>
-      <p>View your learning activity.</p>
-    </a>
-    <a href="#" class="card">
-      <div><i data-lucide="upload" style="width:40px;height:40px;"></i></div>
-      <h3>Submit Work</h3>
-      <p>Coming soon: upload assignments.</p>
-    </a>
-  </div>
+<div style="display: flex; align-items: center; gap: 1rem;">
+<img alt="ADMI Logo" src="assets/logo-admi-learning.png"/>
+<strong>ADMI Learning</strong>
+<nav>
+<a href="dashboard.html">Dashboard</a>
+<a href="videos.html">Videos</a>
+<a href="resources.html">Resources</a>
+<a href="analytics.html">Analytics</a>
+</nav>
 </div>
-
+<div>
+    Welcome, <span id="userName">...</span>
+<button onclick="logout()" style="margin-left:1rem;">Logout</button>
+</div>
+</header>
+<section class="hero">
+<h1>Hello, <span id="studentName">Student</span> 👋</h1>
+<p>Welcome to your learning dashboard. Ready to dive in?</p>
+</section>
+<div class="container">
+<div class="cards">
+<a class="card" href="videos.html">
+<div><i data-lucide="play-circle" style="width:40px;height:40px;"></i></div>
+<h3>Watch Videos</h3>
+<p>Explore your learning playlist.</p>
+</a>
+<a class="card" href="resources.html">
+<div><i data-lucide="folder-open" style="width:40px;height:40px;"></i></div>
+<h3>Study Resources</h3>
+<p>Access your Google Drive materials.</p>
+</a>
+<a class="card" href="analytics.html">
+<div><i data-lucide="bar-chart-3" style="width:40px;height:40px;"></i></div>
+<h3>Your Progress</h3>
+<p>View your learning activity.</p>
+</a>
+<a class="card" href="#">
+<div><i data-lucide="upload" style="width:40px;height:40px;"></i></div>
+<h3>Submit Work</h3>
+<p>Coming soon: upload assignments.</p>
+</a>
+</div>
+</div>
 <footer>© 2025 ADMI Learning</footer>
-
 <script>
 function logout() {
   firebase.auth().signOut().then(() => window.location.replace("/"));
