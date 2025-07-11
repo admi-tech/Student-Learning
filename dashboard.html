@@ -22,6 +22,24 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 </script>
 <script src="scripts/auth-check.js"></script>
+
+<script>
+  const auth = firebase.auth();
+  auth.onAuthStateChanged(user => {
+    if (!user) {
+      window.location.href = "/";
+    } else {
+      document.getElementById("userName").textContent = user.displayName || "Student";
+      document.querySelector(".container").style.display = "block";
+    }
+  });
+  function logout() {
+    firebase.auth().signOut().then(() => {
+      window.location.href = "/";
+    });
+  }
+</script>
+  
 <style>
 body {
   font-family: 'Inter', sans-serif;
