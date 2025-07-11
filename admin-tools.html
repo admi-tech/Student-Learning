@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Tools - ADMI Learning</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: #f4f6f8;
+    }
+    header {
+      background: #003366;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav a {
+      margin-right: 1rem;
+      color: white;
+      text-decoration: none;
+    }
+    .container {
+      padding: 2rem;
+    }
+    .form-section, .comments-section {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    input, select, textarea {
+      display: block;
+      margin: 0.5rem 0 1rem;
+      padding: 0.5rem;
+      width: 100%;
+      max-width: 500px;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      background: #007799;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .comment {
+      background: #f0f0f0;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+    .popular-videos {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    footer {
+      background: #003366;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 3rem;
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="scripts/auth-check.js"></script>
+</head>
+<body>
+  <header>
+    <div>
+      <strong>ADMI Admin Panel</strong>
+      <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="videos.html">Videos</a>
+        <a href="analytics.html">Analytics</a>
+        <a href="admin-tools.html">Admin</a>
+      </nav>
+    </div>
+    <div>
+      Admin: <span id="userName">...</span>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="form-section">
+      <h2>Upload a New Video</h2>
+      <form id="uploadForm">
+        <input type="text" id="title" placeholder="Video Title" required />
+        <input type="text" id="youtubeId" placeholder="YouTube Video ID" required />
+        <input type="text" id="duration" placeholder="Duration (e.g., 10:34)" required />
+        <select id="category" required>
+          <option value="">Select Category</option>
+          <option value="Editing">Editing</option>
+          <option value="Filmmaking">Filmmaking</option>
+          <option value="Audio">Audio</option>
+          <option value="Cinematography">Cinematography</option>
+        </select>
+        <button type="submit">Upload Video</button>
+      </form>
+    </div>
+
+    <div class="comments-section">
+      <h2>Moderate Comments</h2>
+      <div id="commentsList">Loading comments...</div>
+    </div>
+
+    <div class="popular-videos">
+      <h2>Top Videos by Reactions</h2>
+      <div id="popularList">Loading popular videos...</div>
+    </div>
+  </div>
+
+  <footer>© 2025 ADMI Learning</footer>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCT8NSfb_MS11TtF-YEmqRYiOxFj9E7uS8",
+      authDomain: "admi-learning.firebaseapp.com",
+      projectId: "admi-learning",
+      storageBucket: "admi-learning.firebasestorage.app",
+      messagingSenderId: "544669303083",
+      appId: "1:544669303083:web:a7031e48d85fe27780856e",
+      measurementId: "G-9FEF71D529"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    function logout() {
+      auth.signOut().then(() => window.location.replace("/"));
+    }
+
+    enforceAccessControl((user, isAdmin) => {
+      if (!isAdmin) {
+        alert("You do not have admin privileges.");
+        window.location.replace("/");
+      }
+      document.getElementById("userName").textContent = user.displayName || user.email;
+      loadComments();
+      loadPopular();
+    });
+
+    document.getElementById("uploadForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const title = document.getElementById("title").value;
+      const youtubeId = document.getElementById("youtubeId").value;
+      const duration = document.getElementById("duration").value;
+      const category = document.getElementById("category").value;
+      db.collection("videos").add({ title, youtubeId, duration, category })
+        .then(() => {
+          alert("Video uploaded!");
+          document.getElementById("uploadForm").reset();
+        });
+    });
+
+    function loadComments() {
+      db.collection("comments").orderBy("timestamp", "desc").limit(10).get().then(snapshot => {
+        const container = document.getElementById("commentsList");
+        container.innerHTML = "";
+        snapshot.forEach(doc => {
+          const c = doc.data();
+          const div = document.createElement("div");
+          div.className = "comment";
+          div.innerHTML = `<strong>${c.name}</strong>: ${c.text} <br/><button onclick="deleteComment('${doc.id}')">Delete</button>`;
+          container.appendChild(div);
+        });
+      });
+    }
+
+    function deleteComment(id) {
+      db.collection("comments").doc(id).delete().then(() => {
+        alert("Comment deleted");
+        loadComments();
+      });
+    }
+
+    function loadPopular() {
+      db.collection("reactions").get().then(snapshot => {
+        const counts = {};
+        snapshot.forEach(doc => {
+          const r = doc.data();
+          if (!counts[r.videoId]) counts[r.videoId] = 0;
+          if (r.type === "like") counts[r.videoId]++;
+        });
+        const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0,5);
+        const container = document.getElementById("popularList");
+        container.innerHTML = "";
+        sorted.forEach(([id, count]) => {
+          db.collection("videos").doc(id).get().then(vdoc => {
+            if (vdoc.exists) {
+              const v = vdoc.data();
+              const div = document.createElement("div");
+              div.textContent = `${v.title} (${count} 👍)`;
+              container.appendChild(div);
+            }
+          });
+        });
+      });
+    }
+  </script>
+</body></html>
